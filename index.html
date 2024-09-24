@@ -12,51 +12,65 @@
 			padding: 0;
 			text-align: center;
 			background-color: black;
+			color: white;
 		}
 
 		#canvas {
 			display: block;
-			margin: 0;
-			color: white;
-		}
-
-		#canvas:focus {
-			outline: none;
-		}
-
-		.godot {
-			font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
-			color: #e0e0e0;
-			background-color: #3b3943;
-			background-image: linear-gradient(to bottom, #403e48, #35333c);
-			border: 1px solid #45434e;
-			box-shadow: 0 0 1px 1px #2f2d35;
+			margin: 0 auto;
+			background-color: #000;
 		}
 
 		#loading-screen {
 			display: flex;
     		justify-content: center;
     		align-items: center;
+    		position: fixed; /* Fixar na tela */
+    		top: 0;
+    		left: 0;
     		width: 100%;
-    		height: 100vh;
-    		background-color: #000;
-    		color: #fff;
+    		height: 100%;
+    		background-color: black;
+    		color: rgb(255, 0, 0);
     		font-size: 24px;
     		font-family: Arial, sans-serif;
   		}
 	</style>
 </head>
 <body>
+	<div id='loading-screen'>
+		Espere, estamos carregando o monopad<span id="dots"></span>
+	</div>
 	<canvas id='canvas'>
 		HTML5 canvas appears to be unsupported in the current browser.<br />
 		Please try updating or use a different browser.
 	</canvas>
-	<div id='loading-screen'>
-		Espere, estamos carregando o monopad...
-	</div>
 	<script type='text/javascript' src='index.js'></script>
 	<script type='text/javascript'>
-		// Seu código JavaScript aqui
+		const engine = new Engine();
+		engine.start().then(() => {
+			document.getElementById('loading-screen').style.display = 'none'; // Esconde o loading screen quando carregado
+		});
+
+		// Animação dos pontos
+		const dots = document.getElementById('dots');
+		let dotCount = 0;
+		let goingUp = true;
+
+		setInterval(() => {
+			if (goingUp) {
+				dotCount++;
+				if (dotCount === 4) { // Chegou ao máximo de pontos
+					goingUp = false;
+				}
+			} else {
+				dotCount--;
+				if (dotCount === 0) { // Chegou ao mínimo de pontos
+					goingUp = true;
+				}
+			}
+			dots.textContent = '.'.repeat(dotCount); // Atualiza os pontos
+		}, 500); // Atualiza a cada 500 milissegundos
 	</script>
 </body>
 </html>
